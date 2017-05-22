@@ -4,6 +4,7 @@ https://docs.docker.com/
 http://www.formandome.es/linux/docker/
 
 
+
 ## Instalación
 - Dos versiones:
   - CE (Community edition)
@@ -11,6 +12,7 @@ http://www.formandome.es/linux/docker/
 
 - Ya tenemos instalada la versión CE en nuestra máquina virtual
 https://docs.docker.com/engine/installation/linux/ubuntu/
+
 
 
 
