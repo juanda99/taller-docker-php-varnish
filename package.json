@@ -1,0 +1,23 @@
+{
+  "name": "taller-docker-php-varnish",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juanda99/taller-docker-php-varnish.git"
+  },
+  "author": "juanda <juandacorreo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juanda99/taller-docker-php-varnish/issues"
+  },
+  "homepage": "https://github.com/juanda99/taller-docker-php-varnish#readme",
+  "dependencies": {
+    "gitbook": "^3.2.2",
+    "reveal-md": "^0.3.0"
+  }
+}
