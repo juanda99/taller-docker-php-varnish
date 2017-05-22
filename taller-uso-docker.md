@@ -4,7 +4,7 @@ https://docs.docker.com/
 http://www.formandome.es/linux/docker/
 
 
-# Instalación
+## Instalación
 - Dos versiones:
   - CE (Community edition)
   - EE (Enterprise edition)

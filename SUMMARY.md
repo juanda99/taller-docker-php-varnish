@@ -1,5 +1,5 @@
 # Summary
 
 * [Introduction](README.md)
-* [Varnish](Varnish/intro.md)
+* [Taller con docker](taller-uso-docker.md)
 
