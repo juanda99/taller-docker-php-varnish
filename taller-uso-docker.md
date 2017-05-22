@@ -6,7 +6,7 @@ http://www.formandome.es/linux/docker/
 
 
 ## Instalación
-- Dos versiones:
+- Dos versiones: 
   - CE (Community edition)
   - EE (Enterprise edition)
 
