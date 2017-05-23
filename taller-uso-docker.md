@@ -18,8 +18,6 @@
   - http://www.formandome.es/linux/docker/
 
 
-
-
 ## Instalación
 - Dos versiones: 
   - CE (Community edition)
@@ -31,7 +29,8 @@ https://docs.docker.com/engine/installation/linux/ubuntu/
 
 ## docker-compose
 - Gestión de varios contenedores (servicios) a la vez
-- [Instalación](https://docs.docker.com/compose/install/):
+- [Instalación](https://docs.docker.com/compose/install/)
+
 ```
 curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
@@ -45,7 +44,7 @@ docker-compose --version
 $ sudo su
 # cd
 # mkdir demo
-#cd demo
+# cd demo
 ```
 
 
@@ -58,8 +57,6 @@ $ sudo su
 ```
 docker search php
 ```
-
-
 
 
 ## Configuración:
@@ -75,13 +72,14 @@ services:
 ```
 
 
-- Levantamos el servicio:
+## Arranque del contenedor
+
 ```
 docker-compose up -d
 ```
 
 
-- Comprobamos su ejecución: 
+## Comprobar estado
 
 ```
 docker-compose ps
@@ -93,10 +91,14 @@ web1   docker-php-entrypoint apac ...   Up      80/tcp
 ```
 
 
-- No podemos acceder a el, ya que nos hace falta un puerto en local, así que tendremos que añadir el puerto en el fichero docker-compose.ym. y reiniciar el servicio:
+## Acceso al contenedor
+- No podemos acceder: necesitamos algún tipo de redirección desde el host
+- Tendremos que añadir un mapeo de puertos en el fichero docker-compose.yml y reiniciar el servicio
+- Internamente realizará un prerouting mediante iptables
 
 
 - Fichero docker-compose.yml
+
 ```
 version: '3'
 services:
@@ -125,7 +127,7 @@ web1   docker-php-entrypoint apac ...   Up      0.0.0.0:8000->80/tcp
 
 - Si ahora vamos a http://localhost:8000
   - No sirve nada
-- Podemos entrar a la máquina virtual, ejecutando un comando sobre ella (un shell bash):
+- Podemos entrar al contenedor, ejecutando un comando sobre ella (un shell bash):
 ```
 docker-compose exec web1 bash
 cd /var/www/html
@@ -162,6 +164,7 @@ Para comprobar el funcionamiento, creamos un fichero index.php en nuestro direct
 <?php phpinfo(); ?>
 ```
 
+
 - Comprobamos al ejecutar http://localhost:8000 que el fichero se carga... sin embargo no tenemos las extensiones de bbdd:
 
   - ext/mysql (not recommended)
@@ -178,15 +181,15 @@ Para comprobar el funcionamiento, creamos un fichero index.php en nuestro direct
   - Configurar nuestro PHP con las extensiones correspondientes
 
 
-## Customizar nuestra imagen php
+## Customizar imagen php
 - La imagen de PHP que tenemos es básica, necesitamos otra nueva:
-  - Podemos crear una nueva imagen
-  - Podemos instalar componentes adicionales a partir de la anterior (mejor)
+  - Podemos crear una imagen de 0
+  - Instalar componentes adicionales a partir de la anterior (mejor)
+    - Crear un directorio para nuestra imagen
+    -  Crear un fichero Dockerfile con las instrucciones para generar nuestra imagen.
 
-- Pasos:
-  - Crearemos un directorio para nuestra imagen
-  - Crearemos un fichero Dockerfile donde damos las instrucciones para generar nuestra imagen.
-  
+
+
 ``` 
 mkdir web1
 cd web1
@@ -196,7 +199,9 @@ FROM php:5.6-apache
 RUN docker-php-ext-install mysqli
 ```
 
-- Cambiamos las indicaciones de la imagen en el docker-compose.yml
+
+- Cambiamos la etiqueta **image** por la etiqueta **build** en el docker-compose.yml
+
 ```
 version: '3'
 services:
@@ -210,26 +215,27 @@ services:
 ```
 
 
-
-
 - Reiniciamos:
+
 ```
 docker-compose down
 docker-compose up -d
 ```
 
 
-# Buscamos una imagen para nuestra base de datos:
+## Imagen para la base de datos:
 
 - Otra vez como antes...
   - Vía consola:
-```
+
+  ```
 docker search mysql
-```
+  ```
 
   - [Vía web](https://hub.docker.com/)
 
-- Por ejemplo (¡respeta tabulaciones!):
+
+## Un ejemplo (¡respeta tabulaciones!):
 
 ```
   db:
@@ -244,10 +250,12 @@ docker search mysql
       - MYSQL_DATABASE=demo
 ```
 
-- Fijate que:
+
+- Consideraciones:
   - Pasamos variables de entorno según la documentación de la imagen
   - El nombre del host
   - Un volumen para mapear los ficheros de la base de datos y otro para inicializarla (a partir de un fichero sql)
+
 
 - Descarga el fichero con los datos:
 
@@ -366,9 +374,13 @@ services:
 ```
 
 
-# Añadir segunda web
+## Comprobaciones
+- Probamos que se accede a *www.web1.com*
+- Añadamos otra segunda web *www.web2.com*
+  - Se repiten los pasos anteriores
 
-## Añadimos entrada en el docker-compose.yml:
+
+- docker-compose.yml:
 
 ```
   web2:
@@ -381,14 +393,14 @@ services:
 ```
 
 
-## Añadimos registro a /etc/hosts:
+- registro a /etc/hosts:
 
 ```
 127.0.0.1       web2.com        www.web2.com
 ```
 
 
-## Creamos el directorio para los ficheros de la web
+- Directorio para los ficheros de la web
 
 ```
 mkdir data-web2
@@ -397,11 +409,12 @@ echo "<?php phpinfo(); ?>" >index.php
 ```
 
 
-## Levantamos el servicio:
+- Arranque del servicio:
 
 ```
 $ docker-compose up -d web2   
 ```
+
 
 - Comprobamos:
 
@@ -419,3 +432,13 @@ web2          docker-php-entrypoint apac ...   Up      80/tcp
 
 - Observa que ha funcionado directamente sin reinciar el servidor proxy :-)
 
+
+## Ejercicios
+- Añadir un servicio phpmyadmin
+- Añadir un contenedor para backups de base de datos
+- Añadir un servicio de ssh enjaulado
+
+
+## Soluciones
+- Mira la configuración de los contenedores en en repositorio de [DockerizePHPApp](https://github.com/Arasaac/dockerizePHPApp)
+- Es útil saber algo de bash

@@ -13,7 +13,7 @@ apt-get install siege
 
 
 ## Instalación herramientas monitorización
-- Usaremos [Datadog])http://www.datadoghq.com)
+- Usaremos [Datadog](http://www.datadoghq.com)
 - Registrate y sigue los pasos para instalar el agente
 - La cuenta es gratuita para un máximo de 5 hosts y con un histórico de 24h
 
@@ -34,6 +34,8 @@ cat /proc/meminfo
   - Generación de PDF
   - Modificación de imágenes
   - ....
+
+
 - Lo simularemos con el siguiente script *factorial.php* que colgaremos en web1 y web2:
 
 ```
@@ -82,15 +84,15 @@ siege -c100 -t30S www.web2.com/factorial.php?numero=20
 - Comprobemos el diferente desempeño de web1 y web2
 
 
-# Configuración servidor caché
+## Configuración servidor caché
 
 - Utilizamos una imagen ya preparada
 - Nuestro servidor nginx servirá a:
   - web2 directamente
-  - varnish, que será el encargado de enviar a web1
+  - web1 por medio de varnish
+
 
 - Fichero docker-compose.yml:
-
 
 ```
 version: '3'
@@ -133,6 +135,13 @@ services:
       - MYSQL_DATABASE=demo
 ```
 
+
+## Pruebas de uso
+- Ejecuta siege de nuevo y comprueba resultados
+- Para web1, ¿se sigue sirviendo el contenido?
+- Reinicia varnish, ¿y ahora se sirve algo o tenemos un error 503 en Varnish? :-)
+
+
 ## Parametrizar varnish
 - La configuración de varnish se hace mediante ficheros vcl que luego se compilan a C para su ejecución
 - Podríamos cambiar la imagen a una propia:
@@ -145,7 +154,8 @@ COPY varnish.vcl /etc/varnish/conf.d/
 - Y añadir un fichero varnish.vcl en base a [templates ya definidas](https://github.com/mattiasgeniar/varnish-4.0-configuration-templates)
 
 
-![alt text](./images/vlc.png "Mapa conceptual varnish")  
+![alt text](./images/vcl.png "Mapa conceptual varnish")  
+
 
 
 ## Consideraciones
@@ -155,7 +165,7 @@ COPY varnish.vcl /etc/varnish/conf.d/
 - ¿Cuanta espacio reservamos para la caché?
   - ¿En RAM?
   - ¿En disco?
-  
+
 
 ## loadaverage
 - El loadaverage de la CPU no debería ser superior al total de procesadores

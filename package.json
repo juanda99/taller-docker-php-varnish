@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "slides": "reveal-md taller-uso-docker.md --separator '^\n\n' --verticalSeparator '^\n--\n'",
+    "slides": "reveal-md SUMMARY.md --separator '^\n\n' --verticalSeparator '^\n--\n'",
     "pdf": "gitbook pdf ./ ./webapps.pdf",
     "epub": "gitbook epub ./ ./webapps.epub",
     "mobi": "gitbook mobi ./ ./webapps.mobi"

@@ -1,4 +1,4 @@
-# Nuestro proyecto: Arasaac
+# Arasaac
 
 
 ## ¿Qué es Arasaac?

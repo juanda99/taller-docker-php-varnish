@@ -1,6 +1,6 @@
 # Summary
 
-* [Introduction](README.md)
+* [Introducción](README.md)
 * [Tecnologías actuales](tecnologias-actuales.md)
 * [Proyecto Arasaac](arasaac.md)
 * [Taller con docker](taller-uso-docker.md)
