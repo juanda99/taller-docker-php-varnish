@@ -1,7 +1,7 @@
 # Rendimiento sitio web
 
 
-## Instalación herramientas
+## Instalación herramientas testeo
 - Vamos a testear el rendimiento de nuestro servidor web.
 - Las opciones más habituales son: 
   - [ab (Apache benchmark)](https://httpd.apache.org/docs/2.4/programs/ab.html) 
@@ -10,6 +10,13 @@
 ```
 apt-get install siege
 ```
+
+
+## Instalación herramientas monitorización
+- Usaremos [Datadog])http://www.datadoghq.com)
+- Registrate y sigue los pasos para instalar el agente
+- La cuenta es gratuita para un máximo de 5 hosts y con un histórico de 24h
+
 
 ## Características de nuestra máquina
 
@@ -76,6 +83,7 @@ siege -c100 -t30S www.web2.com/factorial.php?numero=20
 
 
 # Configuración servidor caché
+
 - Utilizamos una imagen ya preparada
 - Nuestro servidor nginx servirá a:
   - web2 directamente
@@ -125,3 +133,30 @@ services:
       - MYSQL_DATABASE=demo
 ```
 
+## Parametrizar varnish
+- La configuración de varnish se hace mediante ficheros vcl que luego se compilan a C para su ejecución
+- Podríamos cambiar la imagen a una propia:
+
+```
+FROM eeacms/varnish
+COPY varnish.vcl /etc/varnish/conf.d/
+```
+
+- Y añadir un fichero varnish.vcl en base a [templates ya definidas](https://github.com/mattiasgeniar/varnish-4.0-configuration-templates)
+
+
+![alt text](./images/vlc.png "Mapa conceptual varnish")  
+
+
+## Consideraciones
+- Si el código php nos da un error...
+  -  Lo corregimos
+  -  Purgamos la caché
+- ¿Cuanta espacio reservamos para la caché?
+  - ¿En RAM?
+  - ¿En disco?
+  
+
+## loadaverage
+- El loadaverage de la CPU no debería ser superior al total de procesadores
+  - Utiliza top / htop para comprobarlo
