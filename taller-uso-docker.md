@@ -1,42 +1,75 @@
-# Aplicaciones web vs páginas web
+# Introducción al desarrollo Web
+
+
+## Webapp vs páginas web
 - ¿A medida?
 - ¿Uso de software existente?
   - Moodle, Prestashop, Joomla, Wordpress...
 - ¿Uso de frameworks?
   - Laravel, Django, Angular, React...
 
-# Arquitecturas para desarrollo de aplicaciones web
 
-- En un sitio web con programación tradicional, cada vez que cambiamos de página se produce un renderizado en el navegador en función de un código html que envía el servidor web. 
+## Arquitecturas sistemas LAMP
 
-![alt text](./images/web-arquitecture-traditional.png "Arquitectura web tradicional") 
+- Normalmente usan programación web tradicional
+  - Se pide una página al servidor
+  - El servidor la envía
+  - El navegador la renderiza
+
 
 ![alt text](./images/lamp-arquitecture.jpg "Arquitectura web LAMP")
 
 
-![alt text](./images/web-arquitecture-spa.png "Arquitectura web spa")
-- Por SPA se conocen las aplicaciones de una sola página o Single Page Applications. La aplicación se envía al navegador y la página no se recarga durante el uso de la aplicación.
-- Una aplicación con esta arquitectura podría realizar cualquier función que desarrolle una aplicación tradicional de escritorio ya que el tiempo de respuesta es mucho más rápido que el de una aplicación web tradicional.
+## Programación moderna
 
- 
+- Aplicaciones de una sola página (SPA).
+- Se sirven todas las páginas a la vez:
+  - Se renderizan directamente desde el navegador
+  - La navegación entre páginas es inmediata
+- El servidor provee una **API** que se consulta de modo asíncrono
+- Tiempo de respuesta muy rápido (ideal para aplicaciones de escritorio)
+
+
+## Áreas de desarrollo
 
 ![alt text](./images/spa-vs-traditional-arquitecture.jpg "Arquitectura web tradicional") 
-- En un sitio web con arquitectura, cada vez que cambiamos de página se produce un renderizado desde el propio navegador que se completa con datoos recibidos desde el servidor (json data). El código en servidor se usa básicamente para proveer de una API RESTful a nuestro código cliente usando Ajax.
-- El lenguaje en el cliente SIEMPRE es JavaScript
+
+
+## Lenguaje en servidor
+
+- El lenguaje en el servidor es variable: 
+  - nodeJS
+  - Ruby
+  - Python
+  - PHP
+  - ...
+
+
+## Lenguaje en cliente
+
+- Siempre es JavaScript
   - A veces se utilizan otros lenguajes (TypeScript, Elm...) y se compilan posteriormente a JavaScript
-  - Si se usa JavaScript es conveniente utilizar últimas novedades: ES6 y ES7 y usar un transpiler (Babel, "el nuevo jQuery").
+  - Otra opción es usar el nuevo estándar de JavaScript : 
+    - ES6 y ES7 
+    - Usar un transpiler: Babel, "el nuevo jQuery"
+  - Automatizamos todo mediante task managers: Grunt, Gulp, Webpack...
+
+
+## Frameworks de JavaScript
   - Los frameworks de JavaScript más usados son
     - React
     - Angular
     - Vue (lo usa el framework de PHP Laravel)
 
+
 ![alt text](./images/Angular-react-and-vue-comparision.png "Arquitectura web tradicional")     
 
 
-# ¿Qué es Arassaac?
-- No es una página web, es una aplicación web
-  - Mayor complejidad
-  - Necesidad de un tiempo de respuesta muy corto
+# Nuestro proyecto: Arasaac
+
+
+## ¿Qué es Arasaac?
+- Es una webapp, no una "página web"
 - Aplicación LAMP con arquitectura tradicional
 - Arquitectura vértical
 - Gran uso de procesador (gestión de imágenes)
@@ -45,7 +78,11 @@
 - Localización
 
 
-# ¿Cómo será el nuevo Arasaac?
+# ¿Es necesario el cambio?
+- ![alt text](./images/analytics-arasaac.png "Arquitectura web tradicional") 
+
+
+## ¿Cómo será el nuevo Arasaac?
 - Base de datos no relacional
 - Servidor y cliente en JavaScript (node.js y React)
 - Localización: 
@@ -54,38 +91,65 @@
 - Imágenes mediante SVG
 - API REST documentada mediante [swagger](http://swagger.io/)
 
-# Requerimientos 'extra'
-- El entorno de desarrollo y de producción deben ser lo más parecidos posibles
-  - Replica de desarrollo en producción y al revés de forma rápida
+
+## Otras consideraciones
+- Replica rápida entre entornos de desarrollo y producción
 - Arquitectura horizontal 
 - Medios económicos límitados
-- Una sola máquina en producción:
+- Una sola máquina física en producción:
   - Debemos virtualizar para evitar el *dependency hell*
   - Nuestra CPU y RAM es limitada
-
 - VMWare no nos sirve, Docker sí
 
-# ¿Qué es docker?
+
+## ¿Qué es docker?
 
 - Un sistema de virtualización que cada vez se usa más:
 ![alt text](./images/docker-trends.png "Arquitectura web tradicional")    
 
-- https://docs.docker.com/
-- http://www.formandome.es/linux/docker/
+- Más ligero:
+  - Un solo SO para todos nuestros contenedores (máquinas virtuales)
+![alt text](./images/docker_vs_vm.jpg "Arquitectura web tradicional")   
+
+- Y muchas más cosas:
+![alt text](./images/vm-vs-docker-table.png "Arquitectura web tradicional")  
+
+- Más info: 
+  - https://docs.docker.com/
+  - http://www.formandome.es/linux/docker/
 
 
-# Migración de Arasaac
+## Migración de Arasaac
 - Nuestro desarrollo es lento
-- Arasaac crece muy rápido:
-- ![alt text](./images/analytics-arasaac.png "Arquitectura web tradicional") 
-- La máquina actual está en un estado "inestable"
-- Nuestra nueva máquina de producción está ociosa
-- Cambio de hardware 
+- La máquina actual de Arasaac estaba en un estado "inestable"
+- Nuestra nueva máquina de producción estaba ociosa
+- No hay redundancia (al menos en base de datos)
+
+
+## Cambio de hardware 
   - Pasamos de tres máquinas muy potentes (2 Apache + 1 Mysql) a una sola
   - Pasamos de 48GBytes de RAM a 4GBytes
   - Pasamos a tener menos de un 25% de CPU
   - La nueva máquina estaba pensada para una API Rest, cargando todo el procesamiento en cliente...
 
+
+## Tareas para hacer la migración
+- Replicar la instalación previa (no hay documentación)
+  - Librerías php, mysql
+  - Prueba de funcionamiento
+- Documentar despliegue (Docker)
+
+
+## Optimización de Arasaac
+- Es necesario
+- No queremos tocar el código PHP :-)
+- ¿Servicio Caché?
+- ¿Cambio de versiones? 
+  - Pruebas de funcionamiento + estrés
+  - Necesitamos Docker :-)
+
+
+# Docker
 
 
 ## Instalación
@@ -97,17 +161,30 @@
 https://docs.docker.com/engine/installation/linux/ubuntu/
 
 
-# Búscamos nuestra imagen para un servidor web
+## docker-compose
+- Gestión de varios contenedores (servicios) a la vez
+- [Instalación](https://docs.docker.com/compose/install/):
+```
+curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+```
 
-- Vía consola:
+
+## Búscamos nuestra imagen para un servidor web
+
+- [Vía web](https://hub.docker.com/)
+
+- Vía consola
+
 ```
 docker search php
 ```
 
-- [Vía web](https://hub.docker.com/)
 
 
-# Levantamos un servidor web apache:
+
+## Configuración:
 
 - Fichero docker-compose.yml:
 
@@ -119,10 +196,12 @@ services:
     container_name: web1
 ```
 
+
 - Levantamos el servicio:
 ```
 docker-compose up -d
 ```
+
 
 - Comprobamos su ejecución: 
 
@@ -135,7 +214,10 @@ Name              Command               State   Ports
 web1   docker-php-entrypoint apac ...   Up      80/tcp 
 ```
 
+
 - No podemos acceder a el, ya que nos hace falta un puerto en local, así que tendremos que añadir el puerto en el fichero docker-compose.ytm y reiniciar el servicio:
+
+
   - Fichero docker-compose.yml
 ```
 version: '3'
@@ -146,6 +228,7 @@ services:
     ports:
       - "8000:80"
 ```
+
 
   - Parar y arrancar el servicio:
 
@@ -161,6 +244,7 @@ Name              Command               State          Ports
 web1   docker-php-entrypoint apac ...   Up      0.0.0.0:8000->80/tcp 
 ```
 
+
 - Si ahora vamos a http://localhost:8000
   - No sirve nada
 - Podemos entrar a la máquina virtual, ejecutando un comando sobre ella (un shell bash):
@@ -168,6 +252,7 @@ web1   docker-php-entrypoint apac ...   Up      0.0.0.0:8000->80/tcp
 # docker-compose exec web1 bash
 cd /var/www/html
 ```
+
 
 - Habría que añadir un fichero con datos, quizá lo más cómodo sea desde nuestra máquina ya que nuestro contenedor ¡no tiene ni el paquete vi!
 
@@ -198,13 +283,15 @@ cat data-web1
   - ext/mysqli
   - PDO_MySQL
 
-# Acceso a base de datos
+
+## Acceso a base de datos
 
 - Necesitamos los siguientes componentes:
   - Una base de datos
     - A partir de una nueva imagen
     - Filosofía docker: *one container, one service* 
   - Configurar nuestro PHP con las extensiones correspondientes
+
 
 ## Customizar nuestra imagen php
 - La imagen de PHP que tenemos es básica, necesitamos otra nueva:
