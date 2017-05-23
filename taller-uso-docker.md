@@ -1,10 +1,27 @@
+# ¿Qué es arassaac?
+- Aplicación LAMP
+- No es una página web, es una aplicación web
+  - Mayor complejidad
+  - Necesidad de un tiempo de respuesta muy corto
+
+![alt text](./images/web-arquitecture-traditional.png "Arquitectura web tradicional") 
+
+![alt text](./images/web-arquitecture-spa.png "Arquitectura web tradicional") 
+
+
+![alt text](./images/spa-vs-traditional-arquitecture.jpg "Arquitectura web tradicional") 
+
+
+
+
 # Documentación docker:
 
-https://docs.docker.com/
-http://www.formandome.es/linux/docker/
+- https://docs.docker.com/
+- http://www.formandome.es/linux/docker/
 
+--
 
-# Instalación
+## Instalación
 - Dos versiones:
   - CE (Community edition)
   - EE (Enterprise edition)
@@ -14,7 +31,7 @@ https://docs.docker.com/engine/installation/linux/ubuntu/
 
 
 
-# Búscamos nuestra imagen para un servidor web
+## Búscamos nuestra imagen para un servidor web
 
 - Vía consola:
 ```
@@ -120,7 +137,7 @@ cat data-web1
 - Necesitamos los siguientes componentes:
   - Una base de datos
     - A partir de una nueva imagen
-    - Filosofía docker: un contenedor por servicio 
+    - Filosofía docker: *one container, one service* 
   - Configurar nuestro PHP con las extensiones correspondientes
 
 ## Customizar nuestra imagen php
@@ -149,12 +166,12 @@ docker-compose up -d
 ```
 
 
-# Creamos una imagen para nuestra base de datos:
+# Buscamos una imagen para nuestra base de datos:
 
 - Otra vez como antes...
   - Vía consola:
 ```
-docker search php
+docker search mysql
 ```
 
   - [Vía web](https://hub.docker.com/)
