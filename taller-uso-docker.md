@@ -19,10 +19,9 @@
 - https://docs.docker.com/
 - http://www.formandome.es/linux/docker/
 
---
 
 ## Instalación
-- Dos versiones:
+- Dos versiones: 
   - CE (Community edition)
   - EE (Enterprise edition)
 
@@ -31,7 +30,7 @@ https://docs.docker.com/engine/installation/linux/ubuntu/
 
 
 
-## Búscamos nuestra imagen para un servidor web
+# Búscamos nuestra imagen para un servidor web
 
 - Vía consola:
 ```
