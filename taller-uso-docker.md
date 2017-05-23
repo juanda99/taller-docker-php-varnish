@@ -387,7 +387,6 @@ docker search mysql
 mkdir init-db
 cd init-db
 wget https://raw.githubusercontent.com/juanda99/taller-docker-php-varnish/master/demo.sql
-gzip -d world.sql.gz
 cd ..
 ```
 
@@ -444,23 +443,33 @@ $conn->close();
 
 
 
-## ¿Y si tenemos más de un sitio web? 
+## Proxy inverso
 
-- No pueden ir todos por el 80
-- Necesitamos un proxy inverso (virtual hosts en Apache) que redireccione:
+- ¿Y si tenemos más de un sitio web?
+  - No pueden ir todos por el 80
+  - Necesitamos un proxy inverso (virtual hosts en Apache) que redireccione:
+
+  ```
   docker search proxy
-- Añadimos la url de mi sitio web en el fichero /etc/hosts para que vaya a local host (en un entorno real no haría falta)
-- Añadimos registro a /etc/hosts
+  ```
+
+
+## Configuración de DNS
+
+- A falta de DNS, utilizaremos el fichero **/etc/hosts**
+- Añadimos la url del nuevo sitio para que se resuelva en local
 
 ```
 127.0.0.1       web1.com        www.web1.com
 ```
 
 
+## Configuración servicio
+
 - Modificamos el fichero docker-compose.yml (la redirección de puertos la ponemos en el proxy)
 
 ```
-version: '2'
+version: '3'
 services:
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -489,10 +498,9 @@ services:
 ```
 
 
+# Añadir segunda web
 
-Añadimos una segunda web, en este el php sin acceso a bbdd.
-
-- Añadimos entrada en el docker-compose.yml:
+## Añadimos entrada en el docker-compose.yml:
 
 ```
   web2:
@@ -505,14 +513,14 @@ Añadimos una segunda web, en este el php sin acceso a bbdd.
 ```
 
 
-- Añadimos registro a /etc/hosts:
+## Añadimos registro a /etc/hosts:
 
 ```
 127.0.0.1       web2.com        www.web2.com
 ```
 
 
-- Creamos el directorio para los ficheros de la web
+## Creamos el directorio para los ficheros de la web
 
 ```
 mkdir data-web2
@@ -520,7 +528,9 @@ cd data-web2
 echo "<?php phpinfo(); ?>" >index.php
 ```
 
-- Levantamos el servicio:
+
+## Levantamos el servicio:
+
 ```
 $ docker-compose up -d web2   
 ```
