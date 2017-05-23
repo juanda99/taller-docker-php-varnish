@@ -386,8 +386,8 @@ docker search mysql
 ```
 mkdir init-db
 cd init-db
-wget downloads.mysql.com/docs/world.sql.gz
-unzip world.sql.gz
+wget https://raw.githubusercontent.com/juanda99/taller-docker-php-varnish/master/demo.sql
+gzip -d world.sql.gz
 cd ..
 ```
 
