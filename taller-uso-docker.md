@@ -259,7 +259,7 @@ web1   docker-php-entrypoint apac ...   Up      0.0.0.0:8000->80/tcp
   - No sirve nada
 - Podemos entrar a la máquina virtual, ejecutando un comando sobre ella (un shell bash):
 ```
-# docker-compose exec web1 bash
+docker-compose exec web1 bash
 cd /var/www/html
 ```
 
@@ -268,9 +268,9 @@ cd /var/www/html
 - Lo más cómodo será mapeando directorios ya que nuestro contenedor ¡no tiene ni el paquete vi!
 
 ```
-# mkdir data-web1
-# echo "<?php phpinfo(); ?>" >data-web1/index.php
-# cd ..
+mkdir data-web1
+echo "<?php phpinfo(); ?>" >data-web1/index.php
+cd ..
 ```
 
 
@@ -291,7 +291,6 @@ services:
 
 Para comprobar el funcionamiento, creamos un fichero index.php en nuestro directorio data-web1 con el siguiente contenido:
 ```
-cat data-web1
 <?php phpinfo(); ?>
 ```
 
@@ -328,6 +327,21 @@ cat Dockerfile
 FROM php:5.6-apache
 RUN docker-php-ext-install mysqli
 ```
+
+- Cambiamos las indicaciones de la imagen en el docker-compose.yml
+```
+version: '3'
+services:
+  web1:
+    build: ./web1
+    container_name: web1
+    volumes:
+      - ./data-web1:/var/www/html
+    ports:
+      - "8000:80"
+```
+
+
 
 
 - Reiniciamos:
@@ -368,15 +382,18 @@ docker search mysql
   - Un volumen para mapear los ficheros de la base de datos y otro para inicializarla (a partir de un fichero sql)
 
 - Descarga el fichero con los datos:
+
 ```
 mkdir init-db
 wget www.formandome.es/demo.sql
 docker-compose down
 docker-compose up -d
 ```
+
 - Y probamos que funcione....
 
-- Comprobamos que se ha instalado bien:
+- Comprobamos que se ha instalado bien
+
 ```
 docker-compose exec db bash
 mysql -uroot -ppassword
@@ -386,7 +403,8 @@ show tables
 ....
 ```
 
-- Vamos a probarlo "en real" cambiando nuestro fichero index.php:
+- Vamos a probarlo "en real" cambiando nuestro fichero index.php
+
 ```
 <?php
 $servername = "db";
@@ -417,17 +435,23 @@ $conn->close();
 ```
 
 
-# ¿Y si tenemos más de un sitio web? 
+
+## ¿Y si tenemos más de un sitio web? 
 
 - No pueden ir todos por el 80
 - Necesitamos un proxy inverso (virtual hosts en Apache) que redireccione:
   docker search proxy
 - Añadimos la url de mi sitio web en el fichero /etc/hosts para que vaya a local host (en un entorno real no haría falta)
-- Añadimos registro a /etc/hosts:
+- Añadimos registro a /etc/hosts
+
+```
 127.0.0.1       web1.com        www.web1.com
+```
 
-- Modificamos el fichero docker-compose.yml (la redirección de puertos la ponemos en el proxy):
 
+- Modificamos el fichero docker-compose.yml (la redirección de puertos la ponemos en el proxy)
+
+```
 version: '2'
 services:
   nginx-proxy:
@@ -454,16 +478,15 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=demo
-
+```
 
 
 
 Añadimos una segunda web, en este el php sin acceso a bbdd.
 
-
-
-
 - Añadimos entrada en el docker-compose.yml:
+
+```
   web2:
     image: php:5.6-apache
     container_name: web2
@@ -471,22 +494,32 @@ Añadimos una segunda web, en este el php sin acceso a bbdd.
       - ./data-web2:/var/www/html
     environment:
       - VIRTUAL_HOST=web2.com,www.web2.com
-
+```
 
 
 - Añadimos registro a /etc/hosts:
+
+```
 127.0.0.1       web2.com        www.web2.com
+```
+
 
 - Creamos el directorio para los ficheros de la web
 
+```
 mkdir data-web2
 cd data-web2 
 echo "<?php phpinfo(); ?>" >index.php
+```
 
 - Levantamos el servicio:
+```
 $ docker-compose up -d web2   
-Starting web2
+```
 
+- Comprobamos:
+
+```
 $ docker-compose ps        
 
    Name                  Command               State         Ports        
@@ -495,7 +528,7 @@ db            docker-entrypoint.sh mysqld      Up      3306/tcp
 nginx-proxy   /app/docker-entrypoint.sh  ...   Up      0.0.0.0:80->80/tcp 
 web1          docker-php-entrypoint apac ...   Up      80/tcp             
 web2          docker-php-entrypoint apac ...   Up      80/tcp   
-
+```
 
 
 - Observa que ha funcionado directamente sin reinciar el servidor proxy :-)
