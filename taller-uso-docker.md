@@ -56,10 +56,10 @@
 
 
 ## Frameworks de JavaScript
-  - Los frameworks de JavaScript más usados son
-    - React
-    - Angular
-    - Vue (lo usa el framework de PHP Laravel)
+- Los frameworks de JavaScript más usados son
+  - React
+  - Angular
+  - Vue (lo usa el framework de PHP Laravel)
 
 
 ![alt text](./images/Angular-react-and-vue-comparision.png "Arquitectura web tradicional")     
@@ -171,6 +171,16 @@ docker-compose --version
 ```
 
 
+## Creación de nuestro proyecto
+- Trabajaremos con usuario root por comodidad
+```
+$ sudo su
+# cd
+# mkdir demo
+#cd demo
+```
+
+
 ## Búscamos nuestra imagen para un servidor web
 
 - [Vía web](https://hub.docker.com/)
@@ -215,10 +225,10 @@ web1   docker-php-entrypoint apac ...   Up      80/tcp
 ```
 
 
-- No podemos acceder a el, ya que nos hace falta un puerto en local, así que tendremos que añadir el puerto en el fichero docker-compose.ytm y reiniciar el servicio:
+- No podemos acceder a el, ya que nos hace falta un puerto en local, así que tendremos que añadir el puerto en el fichero docker-compose.ym. y reiniciar el servicio:
 
 
-  - Fichero docker-compose.yml
+- Fichero docker-compose.yml
 ```
 version: '3'
 services:
@@ -230,7 +240,7 @@ services:
 ```
 
 
-  - Parar y arrancar el servicio:
+- Parar y arrancar el servicio:
 
 ```
 docker-compose down
