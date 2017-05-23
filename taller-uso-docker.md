@@ -264,9 +264,17 @@ cd /var/www/html
 ```
 
 
-- Habría que añadir un fichero con datos, quizá lo más cómodo sea desde nuestra máquina ya que nuestro contenedor ¡no tiene ni el paquete vi!
+- Habría que añadir al menos un fichero
+- Lo más cómodo será mapeando directorios ya que nuestro contenedor ¡no tiene ni el paquete vi!
 
-- Así que otra vez lo mismo...
+```
+# mkdir data-web1
+# echo "<?php phpinfo(); ?>" >data-web1/index.php
+# cd ..
+```
+
+
+- Añadimos el mapeo en nuestro fichero de configuración:
 
 ```
 version: '3'
