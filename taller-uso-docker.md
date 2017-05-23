@@ -1,23 +1,91 @@
-# ¿Qué es arassaac?
-- Aplicación LAMP
-- No es una página web, es una aplicación web
-  - Mayor complejidad
-  - Necesidad de un tiempo de respuesta muy corto
+# Aplicaciones web vs páginas web
+- ¿A medida?
+- ¿Uso de software existente?
+  - Moodle, Prestashop, Joomla, Wordpress...
+- ¿Uso de frameworks?
+  - Laravel, Django, Angular, React...
+
+# Arquitecturas para desarrollo de aplicaciones web
+
+- En un sitio web con programación tradicional, cada vez que cambiamos de página se produce un renderizado en el navegador en función de un código html que envía el servidor web. 
 
 ![alt text](./images/web-arquitecture-traditional.png "Arquitectura web tradicional") 
 
-![alt text](./images/web-arquitecture-spa.png "Arquitectura web tradicional") 
+![alt text](./images/lamp-arquitecture.jpg "Arquitectura web LAMP")
 
+
+![alt text](./images/web-arquitecture-spa.png "Arquitectura web spa")
+- Por SPA se conocen las aplicaciones de una sola página o Single Page Applications. La aplicación se envía al navegador y la página no se recarga durante el uso de la aplicación.
+- Una aplicación con esta arquitectura podría realizar cualquier función que desarrolle una aplicación tradicional de escritorio ya que el tiempo de respuesta es mucho más rápido que el de una aplicación web tradicional.
+
+ 
 
 ![alt text](./images/spa-vs-traditional-arquitecture.jpg "Arquitectura web tradicional") 
+- En un sitio web con arquitectura, cada vez que cambiamos de página se produce un renderizado desde el propio navegador que se completa con datoos recibidos desde el servidor (json data). El código en servidor se usa básicamente para proveer de una API RESTful a nuestro código cliente usando Ajax.
+- El lenguaje en el cliente SIEMPRE es JavaScript
+  - A veces se utilizan otros lenguajes (TypeScript, Elm...) y se compilan posteriormente a JavaScript
+  - Si se usa JavaScript es conveniente utilizar últimas novedades: ES6 y ES7 y usar un transpiler (Babel, "el nuevo jQuery").
+  - Los frameworks de JavaScript más usados son
+    - React
+    - Angular
+    - Vue (lo usa el framework de PHP Laravel)
+
+![alt text](./images/Angular-react-and-vue-comparision.png "Arquitectura web tradicional")     
 
 
+# ¿Qué es Arassaac?
+- No es una página web, es una aplicación web
+  - Mayor complejidad
+  - Necesidad de un tiempo de respuesta muy corto
+- Aplicación LAMP con arquitectura tradicional
+- Arquitectura vértical
+- Gran uso de procesador (gestión de imágenes)
+- "Lógica de negocio" reducida
+- Gran uso de redes sociales 
+- Localización
 
 
-# Documentación docker:
+# ¿Cómo será el nuevo Arasaac?
+- Base de datos no relacional
+- Servidor y cliente en JavaScript (node.js y React)
+- Localización: 
+  - Uso de [crowdin](https://crowdin.com/) para gestión de traducciones
+  - Uso de la API de traducción de Microsoft Azure
+- Imágenes mediante SVG
+- API REST documentada mediante [swagger](http://swagger.io/)
+
+# Requerimientos 'extra'
+- El entorno de desarrollo y de producción deben ser lo más parecidos posibles
+  - Replica de desarrollo en producción y al revés de forma rápida
+- Arquitectura horizontal 
+- Medios económicos límitados
+- Una sola máquina en producción:
+  - Debemos virtualizar para evitar el *dependency hell*
+  - Nuestra CPU y RAM es limitada
+
+- VMWare no nos sirve, Docker sí
+
+# ¿Qué es docker?
+
+- Un sistema de virtualización que cada vez se usa más:
+![alt text](./images/docker-trends.png "Arquitectura web tradicional")    
 
 - https://docs.docker.com/
 - http://www.formandome.es/linux/docker/
+
+
+# Migración de Arasaac
+- Nuestro desarrollo es lento
+- Arasaac crece muy rápido:
+- ![alt text](./images/analytics-arasaac.png "Arquitectura web tradicional") 
+- La máquina actual está en un estado "inestable"
+- Nuestra nueva máquina de producción está ociosa
+- Cambio de hardware 
+  - Pasamos de tres máquinas muy potentes (2 Apache + 1 Mysql) a una sola
+  - Pasamos de 48GBytes de RAM a 4GBytes
+  - Pasamos a tener menos de un 25% de CPU
+  - La nueva máquina estaba pensada para una API Rest, cargando todo el procesamiento en cliente...
+
 
 
 ## Instalación
@@ -27,7 +95,6 @@
 
 - Ya tenemos instalada la versión CE en nuestra máquina virtual
 https://docs.docker.com/engine/installation/linux/ubuntu/
-
 
 
 # Búscamos nuestra imagen para un servidor web
