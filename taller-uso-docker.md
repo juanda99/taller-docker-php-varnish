@@ -385,14 +385,21 @@ docker search mysql
 
 ```
 mkdir init-db
-wget www.formandome.es/demo.sql
+cd init-db
+wget downloads.mysql.com/docs/world.sql.gz
+unzip world.sql.gz
+cd ..
+```
+
+- Reinicia el servicio completo
+
+```
 docker-compose down
 docker-compose up -d
 ```
 
-- Y probamos que funcione....
 
-- Comprobamos que se ha instalado bien
+- Comprobamos que se han instalado bien los datos
 
 ```
 docker-compose exec db bash
@@ -402,6 +409,7 @@ use demo
 show tables
 ....
 ```
+
 
 - Vamos a probarlo "en real" cambiando nuestro fichero index.php
 
